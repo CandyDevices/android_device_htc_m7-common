@@ -1,3 +1,4 @@
+allow mdm_helper efs_data_file:lnk_file read;
 allow mdm_helper efs_data_file:lnk_file r_file_perms;
 allow mdm_helper mdm_helper_tmpfs:file create_file_perms;
 allow mdm_helper modem_efs_partition_device:blk_file rw_file_perms;
@@ -11,3 +12,12 @@ allow mdm_helper sysfs:file getattr;
 set_prop(mdm_helper, radio_prop)
 allow mdm_helper sysfs:file read;
 allow mdm_helper system_data_file:lnk_file read;
+
+# access /sys/power/wakelock
+allow mdm_helper self:capability dac_override;
+
+# Read and write for EFS
+allow mdm_helper block_device:dir { getattr write search };
+
+# ks checks the writeback path (dir) for the EFS block devices to make sure it is valid
+allow mdm_helper block_device:dir getattr;
